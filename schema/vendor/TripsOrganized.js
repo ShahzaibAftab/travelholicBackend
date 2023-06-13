@@ -25,9 +25,6 @@ const TripsOrganized = new mongoose.Schema({
     tripStatus: {
         type: Boolean
     },
-    tripPhoto: {
-        type: String
-    },
     tripSeats: {
         type: Number
     },

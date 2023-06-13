@@ -16,12 +16,11 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-myRouter.post('/Upload', upload.single("tripPhoto"), async (req, res) => {
+myRouter.post('/Upload',  async (req, res) => {
     try {
-        let tripPhoto = (req.file) ? req.file.filename : null;
         const { vendorEmail, tripId, tripFrom,tripDuration, tripTo, tripDate,tripTiming, tripStatus,tripSeats,tripPrice,tripDescription } = req.body;
         const postData = new tripsOrganizedSchema({
-            vendorEmail, tripId, tripFrom,tripDuration, tripTo, tripDate,tripTiming, tripStatus, tripPhoto,tripSeats,tripPrice,tripDescription
+            vendorEmail, tripId, tripFrom,tripDuration, tripTo, tripDate,tripTiming, tripStatus,tripSeats,tripPrice,tripDescription
         })
         let c = await postData.save()
         {
