@@ -13,10 +13,10 @@ myRouter.get('/Display',async(req,res)=>{
 })
 
 myRouter.post('/Upload',async(req,res)=>{
-    const{tripId,vendorId,tripFrom,tripTo,userId,tripDate,tripTime,tripSlots,tripRate}=req.body;
+    const{tripId,vendorEmail,tripFrom,tripTo,userId,tripDate,tripTime,tripSeats,tripPrice,ClientName,ContactNo,NumberOfSeats,TotalAmount}=req.body;
     try {
         const postData=new tripRecordSchema({
-            tripId,vendorId,tripFrom,tripTo,userId,tripDate,tripTime,tripSlots,tripRate
+            tripId,vendorEmail,tripFrom,tripTo,userId,tripDate,tripTime,tripSeats,tripPrice,ClientName,ContactNo,NumberOfSeats,TotalAmount
         })
        let c= await postData.save()
        {

@@ -4,10 +4,16 @@ require('./schema');
 const Express=require('express');
 const app=Express();
 const PORT=8000;
+const path=require('path')
 let cors=require('cors');
 app.use(Express.json());
 app.use(cors());
 app.use('/Uploads', Express.static('Uploads'));
+
+app.use(Express.static(path.join(__dirname,'../test/beta/build')))
+app.get('*',function(req,res){
+    res.sendFile(path.join(__dirname,"../test/beta/build/index.html"))
+})
 
 // *=======================ADMIN==================
 const adminDetails=require('./routes/admin/adminDetails');

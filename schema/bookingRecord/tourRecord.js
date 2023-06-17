@@ -1,33 +1,45 @@
 const mongoose=require('mongoose')
 const tourRecord=new mongoose.Schema({
-    tourId:{
-        type:Number
-    },
-    vendorEmail:{
+    ClientName :{
         type:String
     },
-    tourFrom:{
+    ContactNo:{
+        type:Number
+    },
+    NumberOfSeats:{
+        type:Number
+    },
+    TotalAmount:{
+        type:Number
+    },
+    tourDate:{
+        type:Date
+    },
+    tourDuration:{
+        type:Number
+    },
+    tourFrom:
+    {
+        type:String
+    },
+    tourId:{
+        type:String
+    },
+    tourPrice:{
+        type:Number
+    },
+    tourSeats:{
+        type:Number
+    },
+    tourTiming:{
         type:String
     },
     tourTo:{
         type:String
     },
-    userId:{
+    vendorEmail:{
         type:String
     },
-    tourDate:{
-        type:Date
-    },
-    tourTime:{
-        type:String
-    },
-    tourSlots:
-    {
-        type:Number
-    },
-    tourRate:{
-        type:Number
-    }
 
 });
 module.exports=mongoose.model('tourRecord',tourRecord)

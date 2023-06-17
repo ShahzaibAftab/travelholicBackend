@@ -3,19 +3,6 @@ const myRouter = Express.Router()
 
 const tripsOrganizedSchema = require('../../schema/vendor/TripsOrganized')
 
-const multer = require('multer');
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, 'Uploads/Trips');
-    },
-    filename: function (req, file, cb) {
-
-        cb(null, Date.now() + '_' + file.originalname);
-    }
-});
-
-const upload = multer({ storage: storage });
-
 myRouter.post('/Upload',  async (req, res) => {
     try {
         const { vendorEmail, tripId, tripFrom,tripDuration, tripTo, tripDate,tripTiming, tripStatus,tripSeats,tripPrice,tripDescription } = req.body;
@@ -46,17 +33,19 @@ myRouter.get('/DisplayTable', async (req, res) => {
     try {
       const { vendorEmail } = req.query;
   
-      const row = await tripsOrganizedSchema.findOne({ vendorEmail });
+      const rows = await tripsOrganizedSchema.find({ vendorEmail });
   
-      if (!row) {
+      if (rows.length === 0) {
         return res.status(404).json({ error: 'Data not found' });
       }
   
-      return res.send(row);
+      return res.send(rows);
     } catch (error) {
       return res.status(500).send(error);
     }
   });
+  
+
   
 
 module.exports = myRouter

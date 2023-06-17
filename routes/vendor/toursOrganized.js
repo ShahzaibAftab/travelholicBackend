@@ -44,7 +44,23 @@ myRouter.get('/Display', async (req, res) => {
 myRouter.get('/DisplayTable', async (req, res) => {
   try {
     const { vendorEmail } = req.query;
-    const row = await toursOrganizedSchema.findOne({ vendorEmail });
+
+    const rows = await toursOrganizedSchema.find({ vendorEmail });
+
+    if (rows.length === 0) {
+      return res.status(404).json({ error: 'Data not found' });
+    }
+
+    return res.send(rows);
+  } catch (error) {
+    return res.status(500).send(error);
+  }
+});
+
+myRouter.get('/DisplaytourId', async (req, res) => {
+  try {
+    const { tourId } = req.query;
+    const row = await toursOrganizedSchema.findOne({ tourId });
     if (!row) {
       return res.status(404).json({ error: 'Data not found' });
     }

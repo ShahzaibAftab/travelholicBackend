@@ -3,7 +3,7 @@ const tripRecord=new mongoose.Schema({
     tripId:{
         type:Number
     },
-    vendorId:{
+    vendorEmail:{
         type:String
     },
     tripFrom:{
@@ -21,11 +21,23 @@ const tripRecord=new mongoose.Schema({
     tripTime:{
         type:String
     },
-    tripSlots:
+    tripSeats:
     {
         type:Number
     },
-    tripRate:{
+    tripPrice:{
+        type:Number
+    },
+    ClientName:{
+        type:String
+    },
+    ContactNo:{
+        type:String
+    },
+    NumberOfSeats:{
+        type:Number
+    },
+    TotalAmount:{
         type:Number
     }
 });
