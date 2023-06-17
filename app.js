@@ -10,9 +10,9 @@ app.use(Express.json());
 app.use(cors());
 app.use('/Uploads', Express.static('Uploads'));
 
-app.use(Express.static(path.join(__dirname,'../test/beta/build')))
+app.use(Express.static(path.join(__dirname,'./build')))
 app.get('*',function(req,res){
-    res.sendFile(path.join(__dirname,"../test/beta/build/index.html"))
+    res.sendFile(path.join(__dirname,"./build/index.html"))
 })
 
 // *=======================ADMIN==================
