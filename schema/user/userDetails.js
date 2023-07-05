@@ -1,31 +1,33 @@
-const mongoose=require('mongoose')
-const userDetails=new mongoose.Schema({
-    userId:{
-        type:String        
+const mongoose = require('mongoose')
+const userDetails = new mongoose.Schema(
+    {
+      ClientName: {
+        type: String,
+      },
+      ContactNo: {
+        type: Number,
+      },
+      userEmail: {
+        type: String,
+      },
+      userPassword: {
+        type: String,
+      },
+      totalTours: {
+        type: Number,
+      },
+      totalFlights: {
+        type: Number,
+      },
+      userCnic: {
+        type: Number,
+      },
+      userDob: {
+        type: Date,
+      },
     },
-    userName:{
-        type:String
-    },
-    userContact:{
-        type:Number
-    },
-    userEmail:{
-        type:String
-    },
-    userPassword:{
-        type:String
-    },
-    accountDate:{
-        type:Date,
-        default: Date.now
-    },
-    totalTours:{
-        type:Number
-    },
-    totalFlights:{
-        type:Number
-    }
-
-})
-
-module.exports=mongoose.model('userDetails',userDetails)
+    { timestamps: true }
+  );
+  
+  module.exports = mongoose.model('userDetails', userDetails);
+  

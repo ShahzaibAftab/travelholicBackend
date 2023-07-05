@@ -1,34 +1,61 @@
-const Express=require('express')
-const myRouter=Express.Router()
+const Express = require('express')
+const myRouter = Express.Router()
 
-const tripsBiddedSchema=require('../../schema/vendor/tripsBidded')
+const tripsBiddedSchema = require('../../schema/vendor/tripsBidded')
 
-myRouter.get('/Display',async(req,res)=>{
+myRouter.get('/Display', async (req, res) => {
     try {
-        const c=await tripsBiddedSchema.find()
-        res.status(200)
-        res.send(c)
+        const c = await tripsBiddedSchema.find()
+        return res.status(200).send(c)
     } catch (error) {
-        res.status(404)
-        res.send('Error:',error)        
+        return res.status(404).send('Error:', error)
     }
 })
-
-myRouter.post('/Upload',async(req,res)=>{
+myRouter.get('/Display-selective', async (req, res) => {
+    const CustomizedtripId = req.query
     try {
-        const { CustomizedtripId,userId,bidRate,bidDetails}=req.body;
+        const c = await tripsBiddedSchema.find({ CustomizedtripId });
+        return res.status(200).send(c);
+    } catch (error) {
+        return res.status(404).send('Error:', error);
+    }
+});
+myRouter.put('/update-Avail/:CustomizedtripId/:vendorEmail', async (req, res) => {
+    try {
+        const { CustomizedtripId, vendorEmail } = req.params;
 
-        const addData=new tripsBiddedSchema({
-            CustomizedtripId,userId,bidRate,bidDetails       
+        const user = await tripsBiddedSchema.findOne({ CustomizedtripId, vendorEmail });
+
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        user.avail = true;
+
+        await user.save();
+
+        return res.send('Updated');
+    } catch (error) {
+        return res.status(500).send(error);
+    }
+});
+
+
+
+
+myRouter.post('/Upload', async (req, res) => {
+    try {
+        const { CustomizedtripId, vendorEmail, rate, vdescription, avail } = req.body;
+
+        const addData = new tripsBiddedSchema({
+            CustomizedtripId, vendorEmail, rate, vdescription, avail
         })
         await addData.save()
-        res.status(201)
-        res.send(addData)
-        
+        return res.status(201).send(addData)
+
     } catch (error) {
-        res.status(401)
-        res.send(error)
+        return res.status(500).send(error)
     }
 })
 
-module.exports=myRouter
+module.exports = myRouter

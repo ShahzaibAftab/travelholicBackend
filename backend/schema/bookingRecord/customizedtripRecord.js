@@ -1,0 +1,35 @@
+const mongoose=require('mongoose')
+const customizedtripRecord=new mongoose.Schema({
+    customizedtripId:{
+        type:Number
+    },
+    vendorId:{
+        type:String
+    },
+    tripFrom:{
+        type:String
+    },
+    tripTo:{
+        type:String
+    },
+    userId:{
+        type:String
+    },
+    tripDate:{
+        type:Date
+    },
+    tripTime:{
+        type:String
+    },
+    usertripDetails:
+    {
+        type:String
+    },
+    selectedBidRate:{
+        type:Number
+    },
+    offeredRate:{
+        type:Number
+    }
+});
+module.exports=mongoose.model('customizedtripRecord',customizedtripRecord)

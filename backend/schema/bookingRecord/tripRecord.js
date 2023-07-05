@@ -1,0 +1,44 @@
+const mongoose=require('mongoose')
+const tripRecord=new mongoose.Schema({
+    tripId:{
+        type:Number
+    },
+    vendorEmail:{
+        type:String
+    },
+    tripFrom:{
+        type:String
+    },
+    tripTo:{
+        type:String
+    },
+    userId:{
+        type:String
+    },
+    tripDate:{
+        type:Date
+    },
+    tripTime:{
+        type:String
+    },
+    tripSeats:
+    {
+        type:Number
+    },
+    tripPrice:{
+        type:Number
+    },
+    ClientName:{
+        type:String
+    },
+    ContactNo:{
+        type:String
+    },
+    NumberOfSeats:{
+        type:Number
+    },
+    TotalAmount:{
+        type:Number
+    }
+});
+module.exports=mongoose.model('tripRecord',tripRecord)

@@ -1,37 +1,52 @@
-const Express=require('express') 
-const myRouter=Express.Router()
+const Express = require('express')
+const myRouter = Express.Router()
 
-const customizedtripSchema=require('../../schema/bookingRecord/customizedtripRecord')
+const customizedtripSchema = require('../../schema/bookingRecord/customizedtripRecord')
 
-myRouter.get('/Display',async(req,res)=>{
+myRouter.get('/Display', async (req, res) => {
     try {
-        const c=await customizedtripSchema.find()
-        res.status(200)
-        res.send(c)
+        const c = await customizedtripSchema.find()
+        return res.status(200).send(c)
     } catch (error) {
-        res.status(404)
-        res.send('Error:',error)        
+        return res.status(404).send('Error:', error)
     }
 })
-
-myRouter.post('/Upload',async(req,res)=>{
+myRouter.get('/Display-selective-User', async (req, res) => {
+    const { userEmail } = req.query;
     try {
-        const{customizedtripId,vendorId,tripFrom,tripTo,userId,tripDate,tripTime,usertripDetails,selectedBidRate,offeredRate}=req.body;
-        const postData=new customizedtripSchema({
-            customizedtripId,vendorId,tripFrom,tripTo,userId,tripDate,tripTime,usertripDetails,selectedBidRate,offeredRate
+        const records = await customizedtripSchema.find({ userEmail });
+        return res.status(200).send(records);
+    } catch (error) {
+        return res.status(404).send(error);
+    }
+}
+)
+myRouter.get('/Display-selective-vendor', async (req, res) => {
+    const { vendorEmail } = req.query;
+    try {
+        const records = await customizedtripSchema.find({ vendorEmail });
+        return res.status(200).send(records);
+    } catch (error) {
+        return res.status(404).send(error);
+    }
+}
+)
+
+myRouter.post('/Upload', async (req, res) => {
+    try {
+        const { CustomizedtripId, vendorEmail, rate, vdescription, userId, userEmail, bidDescription } = req.body;
+        const postData = new customizedtripSchema({
+            CustomizedtripId, vendorEmail, rate, vdescription, userId, userEmail, bidDescription
         })
-       let c= await postData.save()
-       {
-        if(c)
+        let c = await postData.save()
         {
-            res.status(201)
-            res.send(c)
+            if (c) {
+                return res.status(201).send(c)
+            }
         }
-       }
     } catch (error) {
-       res.status(500)
-       res.send(error) 
+        return res.status(500).send(error)
     }
 })
 
-module.exports=myRouter
+module.exports = myRouter

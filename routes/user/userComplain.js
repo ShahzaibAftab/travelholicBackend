@@ -27,5 +27,24 @@ myRouter.post('/Upload', async(req,res)=>{
         return res.send(error).status(400)
     }
 })
+myRouter.put('/Update-Complain/:_id', async (req, res) => {
+    try {
+        const { _id } = req.params;
+
+        const user = await userComplainSchema.findOne({ _id });
+
+        if (!user) {
+            return res.status(404).json({ error: 'user not found' });
+        }
+
+        user.solved = true;
+
+        await user.save();
+
+        return res.status(200).send('Updated');
+    } catch (error) {
+        return res.status(500).send(error);
+    }
+});
 
 module.exports=myRouter;

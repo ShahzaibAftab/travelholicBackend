@@ -69,5 +69,39 @@ myRouter.get('/DisplaytourId', async (req, res) => {
     return res.status(500).send(error);
   }
 });
+myRouter.put('/Update-slots/:_id', async (req, res) => {
 
+  const _id = req.params._id;
+  const { NumberOfSeats } = req.body;
+
+  const tour = await toursOrganizedSchema.findOne({ _id });
+
+  if (!tour) {
+    return res.status(404).json({ error: 'Tour Not Found' });
+  }
+
+  tour.tourSeats -= parseInt(NumberOfSeats);
+
+  await tour.save();
+
+  return res.send('Seats updated').status(200);
+
+});
+myRouter.delete('/Delete-Organized-Tour/:id', async (req, res) => {
+  const _id = req.params.id;
+
+  try {
+
+    const result = await toursOrganizedSchema.deleteOne({ _id });
+
+    if (result.deletedCount === 0) {
+      res.status(404).send('Record not found');
+    } else {
+      res.send('Record deleted successfully').status(200);
+    }
+  } catch (err) {
+    console.error('Error deleting record:', err);
+    res.status(500).send('Internal Server Error');
+  }
+});
 module.exports = myRouter

@@ -18,7 +18,7 @@ const tripRecord=new mongoose.Schema({
     tripDate:{
         type:Date
     },
-    tripTime:{
+    tripTiming:{
         type:String
     },
     tripSeats:
@@ -29,6 +29,9 @@ const tripRecord=new mongoose.Schema({
         type:Number
     },
     ClientName:{
+        type:String
+    },
+    userEmail:{
         type:String
     },
     ContactNo:{

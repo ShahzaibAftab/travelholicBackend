@@ -3,6 +3,19 @@ const myRouter = Express.Router()
 
 const vendorDetailsSchema = require('../../schema/vendor/vendorDetails')
 
+// FILE HANDLING
+const multer = require('multer');
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'Uploads/Vendor');
+  },
+  filename: function (req, file, cb) {
+
+    cb(null, file.originalname);
+  }
+});
+
+const upload = multer({ storage: storage });
 myRouter.get('/Display', async (req, res) => {
   try {
     const c = await vendorDetailsSchema.find()
@@ -33,6 +46,7 @@ myRouter.post('/login', async (req, res) => {
 });
 
 myRouter.post('/Upload', async (req, res) => {
+  let UserPhoto = (req.file) ? req.file.filename : "default.png";
   try {
     const { vendorName, vendorContact, vendorEmail, vendorPassword, vendorCnic, totalTours, totalFlights } = req.body;
 
@@ -43,7 +57,7 @@ myRouter.post('/Upload', async (req, res) => {
     }
 
     const postData = new vendorDetailsSchema({
-      vendorName, vendorContact, vendorEmail, vendorPassword, vendorCnic, totalTours, totalFlights
+      vendorName, vendorContact, vendorEmail, vendorPassword, vendorCnic, totalTours, totalFlights, UserPhoto
     });
     const savedData = await postData.save();
     if (savedData) {
@@ -104,6 +118,51 @@ myRouter.put('/UpdateTotalTrips', async (req, res) => {
     return res.send('Incremented');
   } catch (error) {
     return res.status(500).send(error);
+  }
+});
+myRouter.put('/add-changes/:_id', upload.single('UserPhoto'), async (req, res) => {
+  
+  const _id = req.params._id;
+  UserPhoto = req.file ? req.file.filename : "default.png";
+
+  const {
+    vendorName,
+    vendorContact,
+    vendorEmail,
+    vendorCnic,
+    vendorPassword,
+    totalTours,
+    totalFlights
+  } = req.body;
+
+  try {
+    const vendorDetails = await vendorDetailsSchema.findById(_id);
+
+    const updatedVendorDetails = {
+      vendorName: vendorName || vendorDetails.vendorName,
+      vendorEmail: vendorEmail || vendorDetails.vendorEmail,
+      vendorContact: vendorContact || vendorDetails.vendorContact,
+      vendorPassword: vendorPassword || vendorDetails.vendorPassword,
+      UserPhoto,
+      vendorCnic: vendorCnic || vendorDetails.vendorCnic,
+      totalTours: totalTours || vendorDetails.totalTours,
+      totalFlights: totalFlights || vendorDetails.totalFlights
+    };
+
+    const editVendor = await vendorDetailsSchema.findByIdAndUpdate(
+      _id,
+      updatedVendorDetails,
+      { new: true } // Get the updated document instead of the original one
+    );
+
+    if (!editVendor) {
+      return res.status(404).send('Vendor not found');
+    }
+
+    return res.status(200).json(editVendor);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).send('Unable to update');
   }
 });
 

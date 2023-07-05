@@ -1,32 +1,18 @@
-const mongoose=require('mongoose')
-const userCustomizedTrips= new mongoose.Schema({
-
-    userId:{
-        type:String
+const mongoose = require('mongoose')
+const userCustomizedTrips = new mongoose.Schema({
+    userEmail: {
+        type: String
     },
-    vendorId:{
-        type:String
+    bidDescription: {
+        type: String
     },
-    customizedtripId:{
-        type:Number
-    },
-    tripFrom:{
-        type:String
-    },
-    tripTo:{
-        type:String
-    },
-    tripDate:{
-        type:Date,
-        default: Date.now
-    },
-    tripTime:{
-        type:String
-    },
-    tripDetails:{
-        type:String
+    Open: {
+        type: Boolean
     }
-    
-});
 
-module.exports=mongoose.model('userCustomizedTrips',userCustomizedTrips)
+}, {
+    timestamps: true
+}
+);
+
+module.exports = mongoose.model('userCustomizedTrips', userCustomizedTrips)
