@@ -35,9 +35,9 @@ myRouter.get('/Display-recent-tour-record', async (req, res) => {
 myRouter.post('/Upload', async (req, res) => {
 
     try {
-        const { ClientName,userEmail, ContactNo, NumberOfSeats, TotalAmount, tourDate, tourDuration, tourFrom, tourId, tourPrice, tourSeats, tourTiming, tourTo, vendorEmail } = req.body;
+        const { ClientName, userEmail, ContactNo, NumberOfSeats, TotalAmount, tourDate, tourDuration, tourFrom, tourId, tourPrice, tourSeats, tourTiming, tourTo, vendorEmail } = req.body;
         const postData = new tourRecordSchema({
-            ClientName,userEmail, ContactNo, NumberOfSeats, TotalAmount, tourDate, tourDuration, tourFrom, tourId, tourPrice, tourSeats, tourTiming, tourTo, vendorEmail
+            ClientName, userEmail, ContactNo, NumberOfSeats, TotalAmount, tourDate, tourDuration, tourFrom, tourId, tourPrice, tourSeats, tourTiming, tourTo, vendorEmail
         })
         let c = await postData.save()
         {
