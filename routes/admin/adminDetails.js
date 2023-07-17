@@ -136,6 +136,7 @@ myRouter.get('/signmeup-DEYGJJGDSETYHVCDF', async (req, res) => {
             adminId,
             adminEmail,
             adminPassword,
+            UserPhoto
         });
 
         // Save the new admin to the database
