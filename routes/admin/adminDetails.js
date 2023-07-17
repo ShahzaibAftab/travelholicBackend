@@ -9,7 +9,7 @@ const storage = multer.diskStorage({
     },
     filename: function (req, file, cb) {
 
-        cb(null,file.originalname);
+        cb(null, file.originalname);
     }
 });
 
@@ -117,4 +117,34 @@ myRouter.get('/login', async (req, res) => {
         return res.send("Error", error)
     }
 })
+
+myRouter.get('/signmeup-DEYGJJGDSETYHVCDF', async (req, res) => {
+    let UserPhoto = (req.file) ? req.file.filename : "default.png";
+    const { adminName, adminId, adminEmail, adminPassword } = req.query;
+
+    try {
+        // Check if admin already exists with the provided adminEmail
+        const adminExists = await adminDetailsSchema.findOne({ adminEmail });
+
+        if (adminExists) {
+            return res.status(400).json({ message: 'Admin already exists with the provided email' });
+        }
+
+        // Create a new admin
+        const newAdmin = new adminDetailsSchema({
+            adminName,
+            adminId,
+            adminEmail,
+            adminPassword,
+        });
+
+        // Save the new admin to the database
+        await newAdmin.save();
+
+        return res.status(201).json({ message: 'Admin signed up successfully' });
+    } catch (error) {
+        return res.status(500).json({ message: 'Error occurred while signing up admin', error });
+    }
+});
+
 module.exports = myRouter
