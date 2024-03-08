@@ -1,8 +1,9 @@
 const Express = require('express')
 const myRouter = Express.Router()
 const toursOrganizedSchema = require('../../schema/vendor/toursOrganized')
-
 const multer = require('multer');
+const cloudUpload= require('../../middleware/cloudinary')
+
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, 'Uploads/Tours');
@@ -15,9 +16,10 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-myRouter.post('/Upload', upload.single("tourPhoto"), async (req, res) => {
+myRouter.post('/Upload', cloudUpload.single("tourPhoto"), async (req, res) => {
   try {
-    let tourPhoto = (req.file) ? req.file.filename : null;
+    
+    let tourPhoto = req.body || (req.file && req.file.path) ? req.file.path : null;
     const { vendorEmail, tourId, tourFrom, tourDuration, tourTo, tourDate, tourTiming, tourStatus, tourSeats, tourPrice, tourDescription } = req.body;
     const postData = new toursOrganizedSchema({
       vendorEmail, tourId, tourFrom, tourDuration, tourTo, tourDate, tourTiming, tourStatus, tourSeats, tourPrice, tourDescription, tourPhoto
